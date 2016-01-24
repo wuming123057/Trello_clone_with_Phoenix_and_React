@@ -8,6 +8,8 @@ This post belongs to the Trello clone with Phoenix Framework and React series. <
 5. [Database seeding and sign in controller](https://blog.diacode.com/trello-clone-with-phoenix-and-react-pt-5) <br/>
 6. Coming soon
  <br/>
+
+Thankds bigardone!
 After the author's permission, I translated into Chinese.
 
 ##Project address
