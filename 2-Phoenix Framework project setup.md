@@ -22,7 +22,7 @@
 
 Phoenix 因为使用Brunch作为静态资源管理，node.js需要作为Phoenix[可选依赖](http://www.phoenixframework.org/docs/installation#section-node-js-5-0-0-)，同时Webpack也需要node.js，因此必须确保node.js安装正确。
 
-不使用Brunch创建新Phoenix项目：
+第一步：不使用Brunch创建新的Phoenix项目：
 
 ```
 $ mix phoenix.new --no-brunch phoenix_trello
@@ -32,19 +32,20 @@ $ mix phoenix.new --no-brunch phoenix_trello
 $ cd phoenix_trello
 ```
 
-对，现在我们创建了新的项目，项目没有使用资源打包工具。Alright, now we have our new project created with no assets building tool. Let's create a new package.json file and install Webpack as a dev dependency:
+对，现在我们创建了新的项目，项目没有使用资源打包工具。    
+
+第二步：创建`package.json`文件，并安装Webpack作为dev依赖：
 
 ```
-#原文使用npm start
+#原文使用npm start，查了查资料，应该使用npm init初始化package.json
 $ npm init  
   ...
   ...
   ...
-$ npm i webpack --save-dev
+$ npm install  webpack --save-dev
 ```
 
-Now our package.json should look something similar to this:
-现在`package.json`中可以看到与下面相似的内容：
+现在`package.json`文件中可以看到与下面相似的内容：
 
 ```json
 {
@@ -58,9 +59,10 @@ Now our package.json should look something similar to this:
 }
 ```
 
-We are going to need a bunch of dependencies in the project so instead of listing them all please take a look to the source file in the project's repository to check them.
+在项目中我们将使用一系列依赖，在这里就不列出他们，大家可以查看项目仓库的[源文件](https://github.com/bigardone/phoenix-trello/blob/master/package.json)。（备注：大家可以复制这个文件到项目文件夹，然后执行`npm install`就行）
 
-We also need to add a webpack.config.js configuration file to tell Webpack how to build the assets:
+第三步：我们需要添加[webpack.config.js](https://github.com/bigardone/phoenix-trello/blob/master/webpack.config.js)配置文件，便于Webpack打包资源:    
+
 
 ```javascript
 'use strict';
@@ -69,11 +71,15 @@ var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var webpack = require('webpack');
 
+// helpers for writing path names
+// e.g. join("web/static") => "/full/disk/path/to/hello/web/static"
 function join(dest) { return path.resolve(__dirname, dest); }
 
 function web(dest) { return join('web/static/' + dest); }
 
 var config = module.exports = {
+  // our application's entry points - for this example we'll use a single each for
+  // css and js
   entry: {
     application: [
       web('css/application.sass'),
@@ -81,16 +87,22 @@ var config = module.exports = {
     ],
   },
 
+  // where webpack should output our files
   output: {
     path: join('priv/static'),
     filename: 'js/application.js',
   },
 
   resolve: {
-    extesions: ['', '.js', '.sass'],
+    extensions: ['', '.js', '.sass'],
     modulesDirectories: ['node_modules'],
   },
 
+  // more information on how our modules are structured, and
+  //
+  // in this case, we'll define our loaders for JavaScript and CSS.
+  // we use regexes to tell Webpack what files require special treatment, and
+  // what patterns to exclude.
   module: {
     noParse: /vendor\/phoenix/,
     loaders: [
@@ -111,11 +123,15 @@ var config = module.exports = {
     ],
   },
 
+  // what plugins we'll be using - in this case, just our ExtractTextPlugin.
+  // we'll also tell the plugin where the final CSS file should be generated
+  // (relative to config.output.path)
   plugins: [
     new ExtractTextPlugin('css/application.css'),
   ],
 };
 
+// if running webpack in production mode, minify files with uglifyjs
 if (process.env.NODE_ENV === 'production') {
   config.plugins.push(
     new webpack.optimize.DedupePlugin(),
@@ -124,9 +140,9 @@ if (process.env.NODE_ENV === 'production') {
 }
 ```
 
-Here we specify we want two different webpack entries, one for the JavaScript and the other one for stylesheets, both placed inside the web/static folder. Our output files are going to be created in the private/static folder. As we are going to use some ES6/7 and JSX features we will use Babel with some presets designed for this.
+这里需要指出的是，我们需要两个不同webpack[入口文件](https://webpack.github.io/docs/multiple-entry-points.html)，一个用于javascript，另一个用户stylesheets，都位于 web/static文件夹。我们的输出文件位于`private/static`文件夹。同时，为了使用了S6/7 和 JSX 特性，我们为此使用Babel来设计。
 
-The final step is to tell Phoenix to start Webpack every time we start our development server, so it watches our changes while we are developing and generates the resulting asset files that the main view layout is going to reference. To do so we have to add a watcher in the config/dev.exs file:
+最后一步：当我们启动开发服务器时，告诉Phoenix每次启动Webpack，这样Webpack可以监控我们开发过程中的任何更改，产生主页面需要的最终资源文件。下面是在`config/dev.exs`添加一个监视：
 
 ```elixir
 # config/dev.exs
@@ -143,7 +159,8 @@ config :phoenix_trello, PhoenixTrello.Endpoint,
 
 ...
 ```
-If we now start our development server we can see that Webpack is also running and watching:
+
+如果我们现在运行服务器，可以看到Webpakc已经在运行并监视着项目：
 
 ```
 $ mix phoenix.server
@@ -160,22 +177,22 @@ Child extract-text-webpack-plugin:
         + 2 hidden modules
 ```
 
-There is just one more thing to do here. If we look into the private/static/js folder we will find a phoenix.js file. This file contains everything we need to use websockets and their channels, so let's move it to our base source folder web/static/js so we can require it wherever we may need it.
+还有一件事需要做，如果我们查看 `private/static/js`目录，可以发现`phoenix.js`文件。这个文件包含了我们需要使用 websockets和channels的一切,因此把这个文件复制到`web/static/js`文件夹中，这样便于我们使用。
 
-##Front-end basic structure
+##后端基本结构
 
-Now that we have everything ready to start coding, let's begin by creating our front-end app structure which is going the need the following npm packages among others:
+现在我们可以编写代码了，让我们开始创建后端应用结构，需要以下npm包：
 
-* bourbon and bourbon-neat, my all time favorite Sass mixin library.
-* history to manage history with JavaScript.
-* react and react-dom.
-* redux and react-redux for handling the state.
-* react-router as routing library.
-* redux-simple-router to keep route changes in the state.
+* bourbon , bourbon-neat, Sass 
+* history 用于管理history .
+* react 和 react-dom.
+* redux 和 react-redux 用于状态处理.
+* react-router 路由库.
+* redux-simple-router 在线变更路由.
 
-I'm not going to waste any time on talking about stylesheets as I'm still modifying them at this moment but what I'd like to mention is that for creating a suitable file structure to organize my Sass files I usually follow css-burrito, which in my personal opinion is very useful.
+我不打算在stylesheets上面浪费更多的时间，后面始终需要修改它们。但是我需要提醒的是，我经常使用[css-burrito](http://css-burrito.com/)创建合适的文件结构来组织通过Sass文件，这是我个人认为非常有用的。
 
-We need to configure our Redux store so let's create the following file:
+我们需要配置Redux存储，创建如下文件：
 
 ```javascript
 //web/static/js/store/index.js
@@ -198,12 +215,11 @@ export default function configureStore() {
 
 ```
 
-Basically we are configuring the Store with two middlewares:
+基本上配置store使用两个中间件。
+* redux-thunk 用于处理 async 动作.
+* redux-logger 用于记录一切动作和浏览器控制台的状态变化
 
-* redux-thunk to dispatch async actions.
-* redux-logger to log any action and state changes through the browser's console.    
-
-We also need to pass all the combined state reducers, so let's create a basic version of that file:
+同时，需要传递所有reducer状态，创建下面的文件：
 
 ```javascript
 //web/static/js/reducers/index.js
@@ -216,8 +232,11 @@ export default combineReducers({
   routing: routeReducer,
   session: session,
 });
-As starting point we are only going to need two reducers, the routeReducer which will automatically set routing changes into the state and a session reducer which looks like this:
+```
 
+开始我们只需要两个reducer，`routeReducer`自动设置路由管理状态变化，`session reducer`如下所示：
+
+```javascript
 //web/static/js/reducers/session.js
 
 const initialState = {
@@ -231,9 +250,9 @@ export default function reducer(state = initialState, action = {}) {
 }
 ```
 
-Its initial state will consists of the currentUser object which we will set after authenticating visitors, the sockect that we will use for connecting to channels and an error to keep track of any issue while authenticating the user.
+初始化状态包含`currentUser`对象，这些对象用于用户验证，以及需要连接channels部分的socket，和验证用户过程中出现的问题。
 
-Having all this prepared now we can go to our main application.js file and render de Root component:
+有了这些准备，可以编写`application.js`文件，和渲染Root组件：
 
 ```javascript
 //web/static/js/application.js
@@ -254,8 +273,11 @@ const target = document.getElementById('main_container');
 const node = <Root routerHistory={history} store={store}/>;
 
 ReactDOM.render(node, target);
-We create the store and history, sync both of them so the previous routeReducer works fine and we render the Root component in the main application layout which will be a Redux Provider wrapper for the routes:
+```
 
+我们创建store和history，并同步他们，便于先前的`routeReduce`很好的工作，在主应用布局中渲染Root组件，将作为一个Redux Provider作用与路由。
+
+```javascript
 //web/static/js/containers/root.js
 
 import React              from 'react';
@@ -293,7 +315,8 @@ export default class Root extends React.Component {
 }
 ```
 
-Now let's define our, very basic, routes file:
+
+现在定义我们基本的路由文件：
 
 ```javascript
 //web/static/js/routes/index.js
@@ -310,9 +333,9 @@ export default (
 );
 ```
 
-Our application is going to be wrapped inside the MainLayout component and the root path will render the registrations view. The final version of this file is a bit more complex due to the authentication mechanism we'll be implementing, but we'll talk about it on the next post.
+我们的应用将包裹在`MainLayout`组件和`Root`路径中，路径将渲染`registrations`视图。文件最终版本可能有些复杂，后面将涉及到用户验证机制，这会在下一部分讲到。
 
-Finally we need to add the html container where we'll render the Root component in the main Phoenix application layout:
+最后，在主Phoenix应用布局中，我们添加`root`组件渲染的html文件：
 
 ```html
 <!-- web/templates/layout/app.html.eex -->
@@ -332,14 +355,17 @@ Finally we need to add the html container where we'll render the Root component 
 
   <body>
     <main id="main_container" role="main"></main>
+    <!main role="main">
+    <!%= render @view_module, @view_template, assigns %>
+    <!/main>
     <script src="<%= static_path(@conn, "/js/application.js") %>"></script>
   </body>
 </html>
 ```
 
-Note both the link and the script tags referencing the static assets generated by Webpack.
+注意：link 和script标记，可以参考Webpack打包生产的静态资源。
 
-As we are going manage our routing on the front-end, we need to tell Phoenix to handle any http request through the index action of the PageController which will just render the main layout and our Root component:
+因为我们是在前端管理路由，需要告诉Phoenix处理任何通过`index`动作产生的http请求，这个动作位于`PageControler`中，用于渲染主布局和`Root`组件：
 
 ```elixir
 # master/web/router.ex
@@ -363,7 +389,8 @@ defmodule PhoenixTrello.Router do
 end
 ```
 
-That's it for now. On the next post we'll be covering how to create our first database migration, the User model and all the functionality for creating new user accounts. In the meanwhile you can check out the live demo and the final result source code:
+现在就是这样。下一部分将介绍如何创建第一个数据库迁移，`User`模型和创建新用户的所需的所有功能。在此期间，你可以检查出的现场演示和最终的源代码：
 
-Live demo Source code
-Happy coding!
+[演示](https://phoenix-trello.herokuapp.com/)        [源代码](https://github.com/bigardone/phoenix-trello)
+
+快乐编程吧！
