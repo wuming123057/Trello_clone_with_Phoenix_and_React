@@ -3,7 +3,7 @@
 这篇文章属于基于Phoenix Framework 和React的Trello系列    
 
 [1. 介绍和架构选择](1-Intro and selected stack.md) <br/>
-2. Phoenix Framework 项目设置 <br/>
+2. [Phoenix Framework 项目设置](2-Phoenix Framework project setup.md)  <br/>
 3. User模型和JWT权限设置 <br/>
 4. 前端使用React 和 Redux实现用户注册 <br/>
 5. 数据库初始化和用户注册控制器 <br/>
@@ -32,10 +32,11 @@ $ mix phoenix.new --no-brunch phoenix_trello
 $ cd phoenix_trello
 ```
 
-Alright, now we have our new project created with no assets building tool. Let's create a new package.json file and install Webpack as a dev dependency:
+对，现在我们创建了新的项目，项目没有使用资源打包工具。Alright, now we have our new project created with no assets building tool. Let's create a new package.json file and install Webpack as a dev dependency:
 
 ```
-$ npm start
+#原文使用npm start
+$ npm init  
   ...
   ...
   ...
@@ -43,6 +44,7 @@ $ npm i webpack --save-dev
 ```
 
 Now our package.json should look something similar to this:
+现在`package.json`中可以看到与下面相似的内容：
 
 ```json
 {

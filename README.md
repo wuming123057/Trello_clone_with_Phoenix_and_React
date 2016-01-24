@@ -19,7 +19,7 @@ After the author's permission, I translated into Chinese.
 这篇文章属于基于Phoenix Framework 和React的Trello系列    
 
 [1. 介绍和架构选择](1-Intro and selected stack.md) <br/>
-2. Phoenix Framework 项目设置 <br/>
+2. [Phoenix Framework 项目设置](2-Phoenix Framework project setup.md)  <br/>
 3. User模型和JWT权限设置 <br/>
 4. 前端使用React 和 Redux实现用户注册 <br/>
 5. 数据库初始化和用户注册控制器 <br/>
