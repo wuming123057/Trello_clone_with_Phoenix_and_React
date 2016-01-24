@@ -1,5 +1,5 @@
 #Trello clone with Phoenix and React（English)
-
+ ![](/images/part1/sign-in.jpg)   
 This post belongs to the Trello clone with Phoenix Framework and React series. <br/>
 1. [Intro and selected stack](https://blog.diacode.com/trello-clone-with-phoenix-and-react-pt-1) <br/>
 2. [Phoenix Framework project setup](https://blog.diacode.com/trello-clone-with-phoenix-and-react-pt-2) <br/>
