@@ -19,18 +19,18 @@
 
 Phoenix使用npm管理静态资源，可以使用Brunch 或者Webpack构建它们，这样就非常简单的实现前后端分离，同时它们有相同的代码库。以下是后端需要使用的：
 
-• Elixir.
-• Phoenix framework.
-• Ecto.
-• PostgreSQL.
+* Elixir.
+* Phoenix framework.
+* Ecto.
+* PostgreSQL.
 
 单页面前端将使用以下技术：
-• Webpack.
-• Sass 用于stylesheets.
-• React.
-• React router.
-• Redux.
-• ES6/ES7 JavaScript.
+* Webpack.
+* Sass 用于stylesheets.
+* React.
+* React router.
+* Redux.
+* ES6/ES7 JavaScript.
 
 同时，将使用一些Elixir依赖和npm包，我将更多即将使用的。
 
