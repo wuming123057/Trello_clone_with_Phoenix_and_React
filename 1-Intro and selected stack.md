@@ -1,4 +1,4 @@
-#Trello clone with Phoenix and React (第一部分)
+#Trello clone with Phoenix and React (第一章节)
 
 这篇文章属于基于Phoenix Framework 和React的Trello系列    
 
@@ -58,6 +58,6 @@ Elixir是一种基于Erlang的快速而且强大的函数式编程语言，同�
 
   ![卡片内容](/images/part1/show-board.jpg)    
 
-因此，这些足够聊聊了。离开一会儿，让我开始这个系列的第二部分。第二部分包含了怎样创建一个Phoenix项目，并且如何使用Webpack替代Brunch作为Phoenix静态资源管理，以及后端基本设置。    
+因此，这些足够聊聊了。离开一会儿，让我开始这个系列的第二章节。第二章节包含了怎样创建一个Phoenix项目，并且如何使用Webpack替代Brunch作为Phoenix静态资源管理，以及后端基本设置。    
 
 快乐编程吧！

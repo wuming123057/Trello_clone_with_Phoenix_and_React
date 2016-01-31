@@ -1,4 +1,4 @@
-#Trello clone with Phoenix and React (第三部分)
+#Trello clone with Phoenix and React (第三章节)
 
 这篇文章属于基于Phoenix Framework 和React的Trello系列    
 
@@ -11,7 +11,7 @@
 > 7. [sockets和channels 配置](7-Setting up sockets and channels.md)<br/>
 > 8. 即将推出 <br/>
 
-#配置User
+#用户注册
 
 现在，项目已经完成了[基本项目设置](https://blog.diacode.com/trello-clone-with-phoenix-and-react-pt-2)，我们准备创建`User`数据库迁移和`User`模型。在这一章，我们将看到整个过程以及来宾如何创建一个用户账号。    
 
@@ -40,8 +40,8 @@ defmodule PhoenixTrello.Repo.Migrations.CreateUser do
       add :first_name, :string, null: false
       add :last_name, :string, null: false
       add :email, :string, null: false
-      add :crypted_password, :string, null: false
-
+      add :encrypted_password, :string, null: false
+      #add :crypted_password, :string, null: false  原文是crypted_password，作者后面添加了user_password_fix
       timestamps
     end
 
@@ -311,7 +311,7 @@ defmodule PhoenixTrello.RegistrationController  do
 end
 ```
 
-多亏于 **Elixir**[模式匹配](http://elixir-lang.org/getting-started/pattern-matching.html)，在`create`动作中获取`"user"`里面的参数。通过这些参数，我们将创建新的`User`变更并插入到数据库。如果一切顺利，我们将使用 **Guardian**的`encode_and_sign`功能来索取新用户的`jwt`令牌，并返回用户`json`数据。另外，如果变更非法，将返回错误`json`数据，我们可以在注册表单中看到这些。
+多亏于 **Elixir**[模式匹配](http://elixir-lang.org/getting-started/pattern-matching.html)，在`create`动作中获取`"user"`里面的参数。通过这些参数，我们将创建新的`User`变更并插入到数据库。如果一切顺利，我们将使用 **Guardian**的`encode_and_sign`功能来索取新用户的`jwt` token，并返回用户`json`数据。另外，如果变更非法，将返回错误`json`数据，我们可以在注册表单中看到这些。
 
 ##JSON 序列化
 
@@ -332,7 +332,7 @@ defmodule PhoenixTrello.User do
 
 从现在起，当我们呈现一个用户，或者用户的列表，控制器动作或通道将做出相应，它将只返回那些指定的字段。非常容易!
 
-后端已经为注册新用户准备好了，在下一部分我们将转移到前端并使用 **React**和 **Redux**这些有趣的东西完成注册过程。同样，别忘记查看运行演示和下载最终的源代码：
+后端已经为注册新用户准备好了，在下一章节我们将转移到前端并使用 **React**和 **Redux**这些有趣的东西完成注册过程。同样，别忘记查看运行演示和下载最终的源代码：
 
 [演示](https://phoenix-trello.herokuapp.com/)        [源代码](https://github.com/bigardone/phoenix-trello)
 

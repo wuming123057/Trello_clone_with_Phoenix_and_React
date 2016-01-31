@@ -1,4 +1,4 @@
-#Trello clone with Phoenix and React (第二部分)
+#Trello clone with Phoenix and React (第二章节)
 
 这篇文章属于基于Phoenix Framework 和React的Trello系列    
 
@@ -335,7 +335,7 @@ export default (
 );
 ```
 
-我们的应用将包裹在`MainLayout`组件和`Root`路径中，路径将渲染`registrations`视图。文件最终版本可能有些复杂，后面将涉及到用户验证机制，这会在下一部分讲到。
+我们的应用将包裹在`MainLayout`组件和`Root`路径中，路径将渲染`registrations`视图。文件最终版本可能有些复杂，后面将涉及到用户验证机制，这会在下一章节讲到。
 
 最后，在主Phoenix应用布局中，我们添加`root`组件渲染的html文件：
 
@@ -391,7 +391,7 @@ defmodule PhoenixTrello.Router do
 end
 ```
 
-现在就是这样。下一部分将介绍如何创建第一个数据库迁移，`User`模型和创建新用户的所需的所有功能。在此期间，你可以查看运行演示和下载最终的源代码：
+现在就是这样。下一章节将介绍如何创建第一个数据库迁移，`User`模型和创建新用户的所需的所有功能。在此期间，你可以查看运行演示和下载最终的源代码：
 
 [演示](https://phoenix-trello.herokuapp.com/)        [源代码](https://github.com/bigardone/phoenix-trello)
 

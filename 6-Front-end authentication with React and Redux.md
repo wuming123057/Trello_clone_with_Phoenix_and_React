@@ -1,4 +1,4 @@
-#Trello clone with Phoenix and React (第六部分)
+#Trello clone with Phoenix and React (第六章节)
 
 这篇文章属于基于Phoenix Framework 和React的Trello系列    
 
