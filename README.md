@@ -11,7 +11,7 @@ This post belongs to the Trello clone with Phoenix Framework and React series. <
 8. Coming soon
  <br/>
 
-Thankds bigardone!
+Thanks bigardone!    
 After the author's permission, I translated into Chinese.
 
 ##Project address
