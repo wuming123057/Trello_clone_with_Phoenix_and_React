@@ -2,14 +2,14 @@
 
 这篇文章属于基于Phoenix Framework 和React的Trello系列    
 
-1. [介绍和架构选择](1-Intro and selected stack.md) <br/>
-2. [Phoenix Framework 项目设置](2-Phoenix Framework project setup.md)  <br/>
-3. [User模型和JWT权限设置](3-The User model and JWT auth.md) <br/>
-4. [前端使用React 和 Redux实现用户注册](4-Front-end for sign up with React and Redux.md) <br/>
-5. [数据库初始化和用户注册控制器](5-Database seeding and sign in controller.md)<br/>
-6. [基于React和Redux的前端验证](6-Front-end authentication with React and Redux.md) <br/>
-7. [sockets和channels 配置](7-Setting up sockets and channels.md)<br/>
-8. 即将推出 <br/>
+> 1. [介绍和架构选择](1-Intro and selected stack.md) <br/>
+> 2. [Phoenix Framework 项目设置](2-Phoenix Framework project setup.md)  <br/>
+> 3. [User模型和JWT权限设置](3-The User model and JWT auth.md) <br/>
+> 4. [前端使用React 和 Redux实现用户注册](4-Front-end for sign up with React and Redux.md) <br/>
+> 5. [数据库初始化和用户注册控制器](5-Database seeding and sign in controller.md)<br/>
+> 6. [基于React和Redux的前端验证](6-Front-end authentication with React and Redux.md) <br/>
+> 7. [sockets和channels 配置](7-Setting up sockets and channels.md)<br/>
+> 8. 即将推出 <br/>
 
 [Trello](https://trello.com/) 是我一直喜欢的一款Web应用。从这款应用发布的时候我就使用它，我喜欢它的工作机制——简单而且灵活。每当我学习新技术的时候，自己就喜欢创建一个实际的应用，这样我可以把一切都放在实践中，从中学到实际中可能遇到的问题，以及查找如何解决这些问题。当自己开始学习[Elixir](http://elixir-lang.org/)和[Phoenix framework](http://www.phoenixframework.org/)的时候，我很清楚应该把我即将遇到未知问题都放到实践中，同时作为一个教程分享他，让其他人了解简单但功能完备的Trello。
 

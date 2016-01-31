@@ -2,14 +2,14 @@
 
 这篇文章属于基于Phoenix Framework 和React的Trello系列    
 
-1. [介绍和架构选择](1-Intro and selected stack.md) <br/>
-2. [Phoenix Framework 项目设置](2-Phoenix Framework project setup.md)  <br/>
-3. [User模型和JWT权限设置](3-The User model and JWT auth.md) <br/>
-4. [前端使用React 和 Redux实现用户注册](4-Front-end for sign up with React and Redux.md) <br/>
-5. [数据库初始化和用户注册控制器](5-Database seeding and sign in controller.md)<br/>
-6. [基于React和Redux的前端验证](6-Front-end authentication with React and Redux.md) <br/>
-7. [sockets和channels 配置](7-Setting up sockets and channels.md)<br/>
-8. 即将推出 <br/>
+> 1. [介绍和架构选择](1-Intro and selected stack.md) <br/>
+> 2. [Phoenix Framework 项目设置](2-Phoenix Framework project setup.md)  <br/>
+> 3. [User模型和JWT权限设置](3-The User model and JWT auth.md) <br/>
+> 4. [前端使用React 和 Redux实现用户注册](4-Front-end for sign up with React and Redux.md) <br/>
+> 5. [数据库初始化和用户注册控制器](5-Database seeding and sign in controller.md)<br/>
+> 6. [基于React和Redux的前端验证](6-Front-end authentication with React and Redux.md) <br/>
+> 7. [sockets和channels 配置](7-Setting up sockets and channels.md)<br/>
+> 8. 即将推出 <br/>
 
 
 #项目设置
@@ -391,7 +391,7 @@ defmodule PhoenixTrello.Router do
 end
 ```
 
-现在就是这样。下一部分将介绍如何创建第一个数据库迁移，`User`模型和创建新用户的所需的所有功能。在此期间，你可以检查出的现场演示和最终的源代码：
+现在就是这样。下一部分将介绍如何创建第一个数据库迁移，`User`模型和创建新用户的所需的所有功能。在此期间，你可以查看运行演示和下载最终的源代码：
 
 [演示](https://phoenix-trello.herokuapp.com/)        [源代码](https://github.com/bigardone/phoenix-trello)
 
