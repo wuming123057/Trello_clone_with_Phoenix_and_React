@@ -9,7 +9,9 @@ This post belongs to the Trello clone with Phoenix Framework and React series. <
 6. [Front-end authentication with React and Redux](https://blog.diacode.com/trello-clone-with-phoenix-and-react-pt-6) <br/>
 7. [Setting up sockets and channels](https://blog.diacode.com/trello-clone-with-phoenix-and-react-pt-7) <br/>
 8. [Listing and creating new boards](https://blog.diacode.com/trello-clone-with-phoenix-and-react-pt-8) <br/>
-9. Coming soon
+9. [Adding board member](https://blog.diacode.com/trello-clone-with-phoenix-and-react-pt-9) <br/>
+10.  [Tracking connected board members](https://blog.diacode.com/trello-clone-with-phoenix-and-react-pt-10) <br/>
+11. Coming soon
  <br/>
 
 Thanks bigardone!    
@@ -29,6 +31,7 @@ After the author's permission, I translated into Chinese.
 6. [基于React和Redux的前端验证](6-Front-end authentication with React and Redux.md) <br/>
 7. [sockets和channels 配置](7-Setting up sockets and channels.md)<br/>
 8. [展示和创建新Board](8-Listing and creating new boards.md)<br/>
-9. 即将推出 <br/>
+9. [添加Board用户](9-Adding board members.md)<br/>
+10. [追踪已连接的Board用户](10-Tracking connected board members.md)<br/>
+11. 即将推出 <br/>
 
-经过作者本人的同意，我将这个系列翻译为中文。

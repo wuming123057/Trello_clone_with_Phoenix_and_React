@@ -2,28 +2,17 @@
 
 这篇文章属于基于Phoenix Framework 和React的Trello系列    
 
-> 1. [介绍和架构选择](1-Intro and selected stack.md) <br/>
-> 2. [Phoenix Framework 项目设置](2-Phoenix Framework project setup.md)  <br/>
-> 3. [User模型和JWT权限设置](3-The User model and JWT auth.md) <br/>
-> 4. [前端使用React 和 Redux实现用户注册](4-Front-end for sign up with React and Redux.md) <br/>
-> 5. [数据库初始化和用户登录控制器](5-Database seeding and sign in controller.md)<br/>
-> 6. [基于React和Redux的前端验证](6-Front-end authentication with React and Redux.md) <br/>
-> 7. [sockets和channels 配置](7-Setting up sockets and channels.md)<br/>
-> 8. [展示和创建新Board](8-Listing and creating new boards.md)<br/>
-> 9. 即将推出 <br/>
-
-
 #项目设置
 
 
-现在我们已经选择了我们的[框架](1-Intro and selected stack.md)，让我们开始创建新的Phoenix程序。在这之前我们的系统已经官方提供的[安装指南](http://www.phoenixframework.org/docs/installation)安装好了[Elixir](http://elixir-lang.org/)和[Phoenix](http://www.phoenixframework.org/)    
+现在我们已经选择了[框架](1-Intro and selected stack.md)，让我们开始创建新的Phoenix项目。在这之前，请确保我们的系统已经按照官方提供的[安装指南](http://www.phoenixframework.org/docs/installation)安装好了[Elixir](http://elixir-lang.org/)和[Phoenix](http://www.phoenixframework.org/)    
 
 
 ##Webpack打包静态资源
 
-对比Ruby on Rails,Phoenix没有自己的资源管理，使用[Brunch](http://brunch.io/)作为其资源打包工具，Brunch使用起来很现代和灵活。如果我们不想用Brunch，也可以不使用Brunch，比如说[Webpack](https://webpack.github.io/)，这是很棒的事情。我以前也没有用过Brunch，因此后面就使用Webpack打包。
+对比Ruby on Rails,Phoenix没有自己的资源管理，而使用[Brunch](http://brunch.io/)作为其资源打包工具，Brunch使用起来很现代和灵活。更有趣的事情是，可以不使用Brunch，我们可以使用[Webpack](https://webpack.github.io/)。我以前也没有用过Brunch，后面就使用Webpack打包。
 
-Phoenix 因为使用Brunch作为静态资源管理，node.js需要作为Phoenix[可选依赖](http://www.phoenixframework.org/docs/installation#section-node-js-5-0-0-)，同时Webpack也需要node.js，因此必须确保node.js安装正确。
+node.js需要作为Phoenix[可选项](http://www.phoenixframework.org/docs/installation#section-node-js-5-0-0-)，如果Phoenix 使用Brunch作为静态资源管理，就需要安装node.js。同时Webpack也需要node.js，因此必须确保node.js安装正确。
 
 第一步：不使用Brunch创建新的Phoenix项目：
 
@@ -35,14 +24,13 @@ $ mix phoenix.new --no-brunch phoenix_trello
 $ cd phoenix_trello
 ```
 
-对，现在我们创建了新的项目，项目没有使用资源打包工具。    
+现在我们创建了新的项目，项目没有使用资源打包工具。    
 
 第二步：创建`package.json`文件，并安装Webpack作为dev依赖：
 
 ```
-#原文使用npm start，查了查资料，应该使用npm init初始化package.json
 $ npm init  
-  ...
+  ...按照提示的默认值确认
   ...
   ...
 $ npm install  webpack --save-dev
@@ -62,7 +50,7 @@ $ npm install  webpack --save-dev
 }
 ```
 
-在项目中我们将使用一系列依赖，在这里就不列出他们，大家可以查看项目仓库的[源文件](https://github.com/bigardone/phoenix-trello/blob/master/package.json)。（备注：大家可以复制这个文件到项目文件夹，然后执行`npm install`就行）
+在项目中我们将使用一系列依赖，在这里就不列出他们，大家可以查看项目仓库中的的[源文件](https://github.com/bigardone/phoenix-trello/blob/master/package.json)。（备注：大家可以复制这个文件到项目文件夹，然后执行`npm install`就行）
 
 第三步：我们需要添加[webpack.config.js](https://github.com/bigardone/phoenix-trello/blob/master/webpack.config.js)配置文件，便于Webpack打包资源:    
 
@@ -143,9 +131,9 @@ if (process.env.NODE_ENV === 'production') {
 }
 ```
 
-这里需要指出的是，我们需要两个不同webpack[入口文件](https://webpack.github.io/docs/multiple-entry-points.html)，一个用于javascript，另一个用户stylesheets，都位于 web/static文件夹。我们的输出文件位于`private/static`文件夹。同时，为了使用了S6/7 和 JSX 特性，我们为此使用Babel来设计。
+这里需要指出的是，我们需要两个不同webpack[入口文件](https://webpack.github.io/docs/multiple-entry-points.html)，一个用于javascript，另一个用于stylesheets，都位于 web/static文件夹。我们的输出文件位于`private/static`文件夹。同时，为了使用了S6/7 和 JSX 特性，我们使用Babel来设计。
 
-最后一步：当我们启动开发服务器时，告诉Phoenix每次启动Webpack，这样Webpack可以监控我们开发过程中的任何更改，产生主页面需要的最终资源文件。下面是在`config/dev.exs`添加一个监视：
+最后一步：当我们启动服务器时，告诉Phoenix需要每次启动Webpack，这样Webpack可以监控我们开发过程中的任何更改，并产生页面需要的最终资源文件。下面是在`config/dev.exs`添加一个监视：
 
 ```elixir
 # config/dev.exs
@@ -180,22 +168,22 @@ Child extract-text-webpack-plugin:
         + 2 hidden modules
 ```
 
-还有一件事需要做，如果我们查看 `private/static/js`目录，可以发现`phoenix.js`文件。这个文件包含了我们需要使用 websockets和channels的一切,因此把这个文件复制到`web/static/js`文件夹中，这样便于我们使用。
+还有一件事需要做，如果我们查看 `private/static/js`目录，可以发现`phoenix.js`文件。这个文件包含了我们需要使用的 websockets和channels,因此把这个文件复制到`web/static/js`文件夹中，这样便于我们使用。
 
-##后端基本结构
+##前端基本结构
 
-现在我们可以编写代码了，让我们开始创建后端应用结构，需要以下npm包：
+现在我们可以编写代码了，让我们开始创建前端应用结构，需要以下npm包：
 
-* bourbon , bourbon-neat, Sass 
+* bourbon , bourbon-neat, 我最喜欢的Sass mixin库
 * history 用于管理history .
 * react 和 react-dom.
 * redux 和 react-redux 用于状态处理.
 * react-router 路由库.
 * redux-simple-router 在线变更路由.
 
-我不打算在stylesheets上面浪费更多的时间，后面始终需要修改它们。但是我需要提醒的是，我经常使用[css-burrito](http://css-burrito.com/)创建合适的文件结构来组织通过Sass文件，这是我个人认为非常有用的。
+我不打算在stylesheets上面浪费更多的时间，后面始终需要修改它们。但是我需要提醒的是，我经常使用[css-burrito](http://css-burrito.com/)创建合适的文件结构来组织Sass文件，这是我个人认为非常有用的。
 
-我们需要配置Redux存储，创建如下文件：
+我们需要配置Redux store，创建如下文件：
 
 ```javascript
 //web/static/js/store/index.js
@@ -218,11 +206,12 @@ export default function configureStore() {
 
 ```
 
-基本上配置store使用两个中间件。
+基本上配置store需要中间件。
+* reduxRouterMiddleware 用于分配路由的 actions 到 store。
 * redux-thunk 用于处理 async 动作.
 * redux-logger 用于记录一切动作和浏览器控制台的状态变化
 
-同时，需要传递所有reducer状态，创建下面的文件：
+同时，需要传递所有reducer state，创建如下的基础文件：
 
 ```javascript
 //web/static/js/reducers/index.js
@@ -237,7 +226,7 @@ export default combineReducers({
 });
 ```
 
-开始我们只需要两个reducer，`routeReducer`自动设置路由管理状态变化，`session reducer`如下所示：
+需要指出的是，我们只需要两个reducer，`routeReducer`自动设置路由管理状态变化，`session reducer`如下所示：
 
 ```javascript
 //web/static/js/reducers/session.js
@@ -253,7 +242,7 @@ export default function reducer(state = initialState, action = {}) {
 }
 ```
 
-初始化状态包含`currentUser`对象，这些对象用于用户验证，以及需要连接channels部分的socket，和验证用户过程中出现的问题。
+初始化状态包含`currentUser`对象，这些对象用于用户验证，以及需要连接channels部分的socket，和验证用户过程中出现的`error`便于追溯问题。
 
 有了这些准备，可以编写`application.js`文件，和渲染Root组件：
 
@@ -278,7 +267,7 @@ const node = <Root routerHistory={history} store={store}/>;
 ReactDOM.render(node, target);
 ```
 
-我们创建store和history，并同步他们，便于先前的`routeReduce`很好的工作，在主应用布局中渲染Root组件，将作为一个Redux Provider作用与路由。
+我们创建history和配置store，在主应用布局中渲染Root组件，将作为一个Redux Provider作用于路由。
 
 ```javascript
 //web/static/js/containers/root.js
@@ -336,9 +325,9 @@ export default (
 );
 ```
 
-我们的应用将包裹在`MainLayout`组件和`Root`路径中，路径将渲染`registrations`视图。文件最终版本可能有些复杂，后面将涉及到用户验证机制，这会在下一章节讲到。
+我们的应用将包含在`MainLayout`组件和`Root`路径中，路径将渲染`registrations`视图。文件最终版本可能有些复杂，后面将涉及到用户验证机制，这会在下一章节讲到。
 
-最后，在主Phoenix应用布局中，我们添加`root`组件渲染的html文件：
+最后，我们添加html容器，在主Phoenix应用布局中呈现`root`组件：
 
 ```html
 <!-- web/templates/layout/app.html.eex -->

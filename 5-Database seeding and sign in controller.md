@@ -2,17 +2,6 @@
 
 这篇文章属于基于Phoenix Framework 和React的Trello系列    
 
-> 1. [介绍和架构选择](1-Intro and selected stack.md) <br/>
-> 2. [Phoenix Framework 项目设置](2-Phoenix Framework project setup.md)  <br/>
-> 3. [User模型和JWT权限设置](3-The User model and JWT auth.md) <br/>
-> 4. [前端使用React 和 Redux实现用户注册](4-Front-end for sign up with React and Redux.md) <br/>
-> 5. [数据库初始化和用户登录控制器](5-Database seeding and sign in controller.md)<br/>
-> 6. [基于React和Redux的前端验证](6-Front-end authentication with React and Redux.md) <br/>
-> 7. [sockets和channels 配置](7-Setting up sockets and channels.md)<br/>
-> 8. [展示和创建新Board](8-Listing and creating new boards.md)<br/>
-> 9. 即将推出 <br/>
-
-
 #用户登录
 
 在前两章，我们已经完成了用户注册和创建新用户。在这一章，我们将看到如何数据库seed。同时，我们将添加一些必须的功能，让用户也可以使用email和密码登录。最后，我们创建一个机制，可以从用户认证token中获得用户数据。
