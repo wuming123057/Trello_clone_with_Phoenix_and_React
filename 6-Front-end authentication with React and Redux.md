@@ -8,7 +8,7 @@
 
 ##路由文件
 
-继续之前，让我们看看React路由文件：
+继续之前，让我们再次看看React路由文件：
 
 ```javascript
 // web/static/js/routes/index.js
@@ -39,11 +39,11 @@ export default (
 );
 ```
 
-在第四章中，`AuthenticatedContainer`是为了防止未鉴定用户访问卡片内容，除非用户合法登录并返回 **jwt**token。
+在第四章中，`AuthenticatedContainer`是为了防止未授权用户访问卡片内容，除非用户合法登录并返回有 **jwt**token。
 
 #视图组件
 
-现在我们需要创建`SessionsNew`组件，用于用户登录时需要呈现表单：
+现在我们需要创建`SessionsNew`组件，用于用户登录时需要呈现的表单：
 
 ```javascript
 // web/static/js/views/sessions/new.js
@@ -114,9 +114,9 @@ export default connect(mapStateToProps)(SessionsNew);
 
 基本功能是呈现表单和当表单确认时候调用`signIn`动作creator。同时，也讲连接`store`，获取通过`session` reducer更新的`store`，便于显示用户验证错误。
 
-##动作creator
+##action creator
 
-下面是用户交互，让我们创建sessions动作creator:
+下面是用户交互，让我们创建sessions相关的action creator:
 
 ```javascript
 // web/static/js/actions/sessions.js
@@ -199,7 +199,7 @@ export default function reducer(state = initialState, action = {}) {
 }
 ```
 
-这里我们就不说那么多了。很显然，我们修改`authenticated`container，就可以获取新`state`:
+这里我们就不说那么多了。很显然，我们需要修改`authenticated`container，就可以获取新`state`:
 
 ##验证container
 
@@ -250,7 +250,7 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps)(AuthenticatedContainer);
 ```
 
-当组件安装后，如果有验证token，在`store`中却不是`currentUser`，会调用`currentUser`动作creator并从后端获取用户数据。让我们添加这部分代码：
+当这个组件mounte后，如果有验证token，在`store`中却不是`currentUser`，会调用`currentUser`动作creator并从后端获取用户数据。让我们添加这部分代码：
 
 ```javascript
 // web/static/js/actions/sessions.js
@@ -277,7 +277,7 @@ const Actions = {
 
 // ...
 ```
-如果用户重新加载浏览器或者是没有之前注销再次访问根URL，数据将会覆盖。根据我们前面的步骤，用户登录后，将在state中设置`currentUser`，该组件将呈现正常显示标题组件及其嵌套的子路有。
+如果用户重新加载浏览器或者是没有之前注销再次访问根URL，数据将会覆盖。根据我们前面的步骤，用户登录后，将在state中设置`currentUser`，该组件将呈现正常显示标题组件及其嵌套的子路由。
 
 ##标题组件
 
@@ -416,8 +416,6 @@ export default function reducer(state = initialState, action = {}) {
 
 ##另外
 
-尽管我们已经完成了用户登录过程，我们还有一个关键功能还没有实现，这也是我们编写的所有功能的核心：用户socket和channels。这个非常重要，我特别留了一章单独讲解它，下一章会仔细这个，`UserSocket`是什么，以及channels如何实现前后端双向连接，实时显示用户改变。样，别忘记查看运行演示和下载最终的源代码：
+尽管我们已经完成了用户登录过程，我们还有一个关键功能还没有实现，这也是我们编写的所有功能的核心：用户socket和channels。这个非常重要，我特别留了一章单独讲解它，下一章会仔细这个，`UserSocket`是什么，以及channels如何实现前后端双向连接，实时显示用户改变。同样，别忘记查看运行演示和下载最终的源代码：
 
 [演示](https://phoenix-trello.herokuapp.com/)        [源代码](https://github.com/bigardone/phoenix-trello)
-
-快乐编程吧！
