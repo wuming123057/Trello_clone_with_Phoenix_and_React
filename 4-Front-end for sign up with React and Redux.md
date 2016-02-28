@@ -4,13 +4,13 @@
 
 #用户注册
 
-[上一章节](3-The User model and JWT auth.md)，我们创建了`User`模型，并完成了验证以及加密密码变更，同时更新了路由文件，创建了`RegistrationControlle`以便于处理新用户请求和返回 **JSON**数据以及 **jwt** token验证请求。现在让我们转移到前端这边。
+[上一章节](3-The User model and JWT auth.md)，我们创建了`User`模型，并完成了相关验证以及加密密码等变更，同时更新了路由文件，创建了`RegistrationControlle`以便于处理新用户请求和返回验证需要的 **JSON**数据以及 **jwt** token。现在让我们转移到前端这边。
 
-#Recat路由准备
+#准备Recat路由
 
-拥有两个公共路由是我们的主要目的，即`/sign_in`和`/sign_up`，任何访问者将能够通过他们登录到应用程序或这注册新的用户帐户。
+我们的主要目标拥有两种公共路由，一种是`/sign_in`和`/sign_up`，任何访问者将能够通过他们登录到应用程序或这注册新的用户帐户。
 
-另一方面我们需要`/`作为根路由，用于显示所有属于用户的卡片，`/boards/:id`路由用于显示所选择的用户开片。访问最后两个路由，用户必须是验证过的，否则，我们将他重定向到注册页面。
+另一方面我们需要`/`作为根路由，用于显示所有属于用户的卡片，而`/boards/:id`路由用于显示用户所选择的开片。访问最后两个路由，用户必须是验证过的，否则，我们将他重定向到注册页面。
 
 让我们更新`react-router`路由文件，如下所示：
 
@@ -72,7 +72,7 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps)(AuthenticatedContainer);
 ```
 
-我们主要做的是在这里，当组件增加，检测 **jwt** token是否在当前浏览器本地存储中。后面我们将看到如何设置它，但现在，让我们试想一下，它不存在，这要感谢`redux-simple-router`库将用户重定向到注册页面。
+在这里我们主要做的是，当组件mount时，检测在当前浏览器是否本地存储有 **jwt** token。后面我们将看到如何设置它，但现在，让我们试想一下，它不存在，这要感谢`redux-simple-router`库将用户重定向到注册页面。
 
 ##注册视图组件
 
@@ -155,7 +155,7 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps)(RegistrationsNew);
 ```
 
-对于这个组件，不能说太多，当它加载的时候，改变了`document`标题，同时呈现注册表单并调用注册登记action creator的结果。
+对于这个组件，不想多的太多，当它加载的时候，改变了`document`标题，同时呈现给注册表单并dispatch注册登记 action creator的结果。
 
 ##Action creator
 
@@ -199,9 +199,9 @@ export default Actions;
 ```
 
 
-当`RegistrationsNew`组件调用action creator传递表单数据，新的POST请求发送到服务器。请求被`Phoenix`路由过滤，并被`RegistrationController`处理（上一章节创建的）。如果成功，将返回`jwt` token，并存储到`localStorage`中，创建的用户数据将传递到`CURRENT_USER`动作中，最后重定向用户到根路由页面。相反，注册数据有任何错误，将产生`REGISTRATIONS_ERROR`动作与错误，这样我们就可以在形式向他们展示给用户。
+当`RegistrationsNew`组件调用action creator传递表单数据，新的`POST`请求发送到服务器。请求首先被`Phoenix`路由过滤，并由`RegistrationController`处理（上一章节创建的）。如果成功，将返回`jwt` token，并存储到`localStorage`中，创建的用户数据将dispatch到`CURRENT_USER`动作中，最后重定向用户到根路由页面。相反，注册数据有任何错误，将产生`REGISTRATIONS_ERROR`动作与错误，最终就可以以表格呈现给用户。
 
-为了处理这些`http`请求，我们将使用[isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch)包处理文件，其中一些有助于完成这个目的。
+为了处理这些`http`请求，我们将借助于[isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch)包来处理这些`utils`文件，其中一些有助于完成这个目的。
 
 ```javascript
 // web/static/js/utils/index.js
@@ -292,7 +292,7 @@ export default function reducer(state = initialState, action = {}) {
 }
 ```
 
-注意：当我们从`utils`文件中调用`renderErrorsFor`函数用于显示错误：
+注意：我们从`utils`文件中调用`renderErrorsFor`函数用于显示错误：
 
 ```javascript
 // web/static/js/utils/index.js
@@ -314,8 +314,6 @@ export function renderErrorsFor(errors, ref) {
 }
 ```
 
-这就是所有的注册过程。下一章节，我们将看到已存在用户如何登录，并且访问个人部分。同样，别忘记查看运行演示和下载最终的源代码：
+这就是所有的注册过程。下一章节，我们将看到已存在的用户如何登录，并且访问个人的内容。同样，别忘记查看运行演示和下载最终的源代码：
 
 [演示](https://phoenix-trello.herokuapp.com/)        [源代码](https://github.com/bigardone/phoenix-trello)
-
-快乐编程吧！

@@ -11,7 +11,8 @@ This post belongs to the Trello clone with Phoenix Framework and React series. <
 8. [Listing and creating new boards](https://blog.diacode.com/trello-clone-with-phoenix-and-react-pt-8) <br/>
 9. [Adding board member](https://blog.diacode.com/trello-clone-with-phoenix-and-react-pt-9) <br/>
 10.  [Tracking connected board members](https://blog.diacode.com/trello-clone-with-phoenix-and-react-pt-10) <br/>
-11. Coming soon
+11. [Adding lists and cards](https://blog.diacode.com/trello-clone-with-phoenix-and-react-pt-11) <br/>
+12. Coming soon
  <br/>
 
 Thanks bigardone!    
@@ -33,5 +34,6 @@ After the author's permission, I translated into Chinese.
 8. [展示和创建新Board](8-Listing and creating new boards.md)<br/>
 9. [添加Board用户](9-Adding board members.md)<br/>
 10. [追踪已连接的Board用户](10-Tracking connected board members.md)<br/>
-11. 即将推出 <br/>
+11. [添加列表和卡片](11-Adding lists and cards.md)<br/>
+12. 即将推出 <br/>
 
