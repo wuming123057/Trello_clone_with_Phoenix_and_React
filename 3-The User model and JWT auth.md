@@ -4,17 +4,17 @@
 
 #用户注册
 
-现在，项目已经完成了[基本项目设置](https://blog.diacode.com/trello-clone-with-phoenix-and-react-pt-2)，我们准备创建`User`数据库迁移和`User`模型。在这一章，我们将看到整个过程以及来宾如何创建一个用户账号。    
+项目已经完成了[基本项目设置](2-Phoenix Framework project setup.md)，现在我们准备创建`User`数据库迁移和`User`模型。在这一章，我们将看到这整个过程以及来宾如何创建一个新的账户。    
 
 ##User数据库迁移与User 模型
 
-**Phoenix**使用[Ecto](https://github.com/elixir-lang/ecto)装与数据库相关的任何操作。如果使用过 **Rails**，**Ecto** 有些类似于 **ActiveRecord**，**ActiveRecord**把相似的功能分隔为不同的模块。
+**Phoenix**使用[Ecto](https://github.com/elixir-lang/ecto)解决与数据库相关的任何操作。如果使用过 **Rails**，**Ecto** 有些类似于 **ActiveRecord**，**ActiveRecord**把相似的功能分隔为不同的模块。
 
 在这之前，我们需要创建运行的数据库：
 
 `$ mix ecto.create`
 
-现在，让我们创建新的 **Ecto** 迁移和模型。模型生成命令后跟模块的名字作为参数，模块名称的复数（小写）就是表名称，表的字段需要使用`name:type`语法，让我们运行它：
+现在，让我们创建新的 **Ecto** 迁移和模型。模型生成命令后面的参数是模块的名字，模块名称的复数（小写）就是表名称，表的字段需要使用`name:type`语法，让我们运行它：
 
 `$ mix phoenix.gen.model User users first_name:string last_name:string email:string encrypted_password:string`
 
@@ -78,12 +78,12 @@ end
 这里可以找到两个主要不同的部分：
 
 *  **schema**部分所有元数据对应于表字段
-* **变更** 功能：可以定义所有的验证和转变，这些都可以应用于之前在程序中需要使用的数据。
+* **changeset** 功能：可以定义所有的验证和转变，这些都可以应用于之前在程序中需要使用的数据。
 
 
-##变更验证和转换
+##changeset验证和转换
 
-当用户注册的时候，我们希望添加一些验证过程，因为之前我们已经在表字段上添加了null限制和email唯一约束。我们必须在 `User`模型中反应这些，便于处理非法数据引起的运行错误。同时我们想加密 `encrypted_password`字段，即使我们将使用普通字符串来指定用户的密码，它也将以安全的方式被插入。
+因为之前我们已经在表字段上添加了null限制和email唯一约束，当用户注册的时候，我们希望添加一些其他验证过程。我们必须在 `User`模型中反应这些，这样便于处理非法数据引起的运行错误。同时我们想加密 `encrypted_password`字段，即使我们将使用普通字符串来指定用户的密码，它也将以安全的方式被插入。
 
 首先更新User模型和添加一些验证：    
 
@@ -116,12 +116,12 @@ end
 基本上我们修改了如下内容：
 
 * 添加了虚拟的`password`字段，虚拟字段不会存在到数据库中，却可以和其他字段一样使用。在这里，我们主要用户注册表单。
-* 添加`pasword`字段请求。
+* 添加`pasword`字段。
 * 添加`email`格式检测验证。
-* 添加检测密码最小长度为5个字符验证，以及密码是否输入同一个值。
+* 添加`password`最小长度为5个字符验证，以及检查密码是否输入同一个值。
 * 添加`email`唯一检测验证。
 
-经过这些修改，我们完成了验证。但是在保存数据前，我们需要填充encrypted_password字段。为了完成这，我们需要使用[comeonin](https://github.com/elixircnx/comeonin) 密码加密库，在`mix.exs`文件中添加`comeonin`依赖，并作为应用程序：
+经过这些修改，我们完成了验证。但是在保存数据前，我们需要填充`encrypted_password`字段。为了完成这，我们需要使用[comeonin](https://github.com/elixircnx/comeonin) 密码加密库，在`mix.exs`文件中添加`comeonin`依赖，并作为应用程序：
 
 ```elixir
 # mix.exs
@@ -155,7 +155,7 @@ end
 
 `$ mix deps.get`
 
-现在 **comeonin**已经安装完毕，让我们回到`User`模型，在变更管道中添加一个生成`encrypted_password`字段步骤：
+现在 **comeonin**已经安装完毕，让我们回到`User`模型，下一步在 `changeset` pipeline中添加生成`encrypted_password`字段：
 
 ```elixir
 # web/models/user.ex
@@ -180,12 +180,12 @@ defmodule PhoenixTrello.User do
 end
 ```
 
-在新的函数中，我们首先监测变革是否合法和密码是否改变。如果合法，我们使用 **comeonin**加密密码并放入`encrypted_password`字段中，否则范围变更。
+在新的函数中，我们首先检测changeset是否合法以及密码是否改变。如果合法，我们使用 **comeonin**加密密码并放入`encrypted_password`字段中，否则返回changeset。
 
 ##路由
 
 
-现在`User`模型已经准备好了，让我们通过修改`router.ex`继续完成注册过程，在这个文件中创建`:api` 管道和我们的第一个路由：
+现在`User`模型已经准备好了，让我们通过修改`router.ex`继续完成注册过程，在这个文件中创建`:api` pipeline和我们的第一个路由：
 
 ```elixir
 # web/router.ex
@@ -211,11 +211,11 @@ defmodule PhoenixTrello.Router do
 end
 ```
 
-任何通过`/api/v1/registrations`的`POST`请求，都会在`RegistrationController`中的`create`动作中处理（接受 **JSON**...相当于解释：）
+任何通过`/api/v1/registrations`的`POST`请求，都会被`RegistrationController`中的`create`动作中处理，也接受 **JSON**...相当于解释：）
 
 ##控制器
 
-在完成控制器之前，让我们想想我们都需要什么。新用户将访问注册页面，填写表格并确认。如果控制器接收到的数据是合法的，我们将向数据库中插入一条新`User`数据，在系统中登记，并返回[jwt](https://en.wikipedia.org/wiki/JSON_Web_Token)验证标记，在前端登陆过程是以 **json**形式返回。这个标记不仅在每次用户验证时需要，而且当用户访问程序的私有页面时需要。
+在完成控制器之前，让我们想想我们都需要什么。新用户将访问注册页面，填写表格并确认。如果控制器接收到的数据是合法的，我们将向数据库中插入一条新`User`数据，在系统中记录，并返回[jwt](https://en.wikipedia.org/wiki/JSON_Web_Token)验证token，在前端登陆过程是以 **json**形式返回。这个token不仅在每次用户验证时需要，而且当用户访问程序的私有页面时需要。
 
 为了处理这个验证和 **jwt**生成器，我们将使用[Guardian](https://github.com/ueberauth/guardian)库，这个库非常好用。仅需要在`mix.exs`文件中添加：
 
@@ -252,7 +252,7 @@ config :guardian, Guardian,
   serializer: PhoenixTrello.GuardianSerializer
 ```
 
-同时，我们需要创建`GuardianSerializer`，便于告诉 **Guardian**如何编码和解码用户进出令牌:
+同时，我们需要创建`GuardianSerializer`，便于告诉 **Guardian**如何编码和解码用户进出token:
 
 ```elixir
 # lib/phoenix_trello/guardian_serializer.ex
@@ -302,7 +302,7 @@ defmodule PhoenixTrello.RegistrationController  do
 end
 ```
 
-多亏于 **Elixir**[模式匹配](http://elixir-lang.org/getting-started/pattern-matching.html)，在`create`动作中获取`"user"`里面的参数。通过这些参数，我们将创建新的`User`变更并插入到数据库。如果一切顺利，我们将使用 **Guardian**的`encode_and_sign`功能来索取新用户的`jwt` token，并返回用户`json`数据。另外，如果变更非法，将返回错误`json`数据，我们可以在注册表单中看到这些。
+感谢 **Elixir**[模式匹配](http://elixir-lang.org/getting-started/pattern-matching.html)，在`create`动作中获取`"user"`中参数。通过这些参数，我们将创建新的`User`changeset并插入到数据库。如果一切顺利，我们将使用 **Guardian**的`encode_and_sign`功能来索取新用户的`jwt` token，并返回用户`json`数据。另外，如果changeset非法，将返回错误`json`数据，我们可以在注册表单中看到这些。
 
 ##JSON 序列化
 
@@ -321,10 +321,8 @@ defmodule PhoenixTrello.User do
  end
 ```
 
-从现在起，当我们呈现一个用户，或者用户的列表，控制器动作或通道将做出相应，它将只返回那些指定的字段。非常容易!
+从现在起，当我们呈现一个用户或者用户的列表时候，控制器动作或通道将做出相应，它将只返回那些指定的字段。非常容易!
 
 后端已经为注册新用户准备好了，在下一章节我们将转移到前端并使用 **React**和 **Redux**这些有趣的东西完成注册过程。同样，别忘记查看运行演示和下载最终的源代码：
 
 [演示](https://phoenix-trello.herokuapp.com/)        [源代码](https://github.com/bigardone/phoenix-trello)
-
-快乐编程吧！

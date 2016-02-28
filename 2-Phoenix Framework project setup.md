@@ -10,7 +10,7 @@
 
 ##Webpack打包静态资源
 
-对比Ruby on Rails,Phoenix没有自己的资源管理，而使用[Brunch](http://brunch.io/)作为其资源打包工具，Brunch使用起来很现代和灵活。更有趣的事情是，可以不使用Brunch，我们可以使用[Webpack](https://webpack.github.io/)。我以前也没有用过Brunch，后面就使用Webpack打包。
+对比Ruby on Rails，Phoenix没有自己的资源管理，而使用[Brunch](http://brunch.io/)作为其资源打包工具，Brunch使用起来很现代和灵活。更有趣的事情是，可以不使用Brunch，我们可以使用[Webpack](https://webpack.github.io/)。我以前也没有用过Brunch，后面就使用Webpack打包。
 
 node.js需要作为Phoenix[可选项](http://www.phoenixframework.org/docs/installation#section-node-js-5-0-0-)，如果Phoenix 使用Brunch作为静态资源管理，就需要安装node.js。同时Webpack也需要node.js，因此必须确保node.js安装正确。
 
@@ -381,8 +381,7 @@ defmodule PhoenixTrello.Router do
 end
 ```
 
-现在就是这样。下一章节将介绍如何创建第一个数据库迁移，`User`模型和创建新用户的所需的所有功能。在此期间，你可以查看运行演示和下载最终的源代码：
+现在就是这样。下一章节将介绍如何创建第一个数据库迁移，`User`模型和创建新用户所需的所有功能。在此期间，你可以查看运行演示和下载最终的源代码：
 
 [演示](https://phoenix-trello.herokuapp.com/)        [源代码](https://github.com/bigardone/phoenix-trello)
 
-快乐编程吧！
