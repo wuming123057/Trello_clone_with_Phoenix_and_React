@@ -2,19 +2,19 @@
 
 这篇文章属于基于Phoenix Framework 和React的Trello系列    
 
-#Listing and creating boards
+#卡片展示和创建
 
-Now that we have covered the important aspects of user registration and authentication management as well as connecting to the socket and joining channels, we are ready to move on to the next level and let the user list and create his own boards.
+现在我们已经完成用户注册和权限管，同时连接到Socket，并加入到channels。我们将进入下一阶段：让用户展示和创建自己的卡片。
 
-##The Board migration
+##卡片迁移
 
-First we need to create the migration and model. To do that, just run:
+首先，我们需要创建迁移和模型，如下所示：
 
 ```
 $ mix phoenix.gen.model Board boards board_id:references:board name:string
 ```
 
-This will generate our new migration file which will look something similar to this:
+将会创建新的类似如下所示的迁移文件：
 
 ```elixir
 # priv/repo/migrations/20151224093233_create_board.exs
@@ -35,17 +35,17 @@ defmodule PhoenixTrello.Repo.Migrations.CreateBoard do
 end
 ```
 
-The new table called boards will have, apart from its id and timestamps fields, a name field and a foreign key to the users table. Note that we are relying on the database to delete the boards belonging to a user if the user is deleted. It also adds an index to the user_id to speed up things, and a null constraints to the name.
+新建数据表表名是boards，包含id和timestamps字段，以及name字段，name字段是外键，关联于users表。注意如果用户被删除了，数据库将删除这个用户所有的卡片。同时为这个表添加索引，便于查询，和name添加空约束。
 
-Having finished modifying the migration file, we need to run it:
+完成这些修改后，运行它：
 
 ```
 $ mix ecto.migrate
 ```
 
-#The Board model
+#Board模型
 
-Let's take a look at the Board model:
+让我们看看Board模型：
 
 ```elixir
 # web/models/board.ex
@@ -80,7 +80,7 @@ defmodule PhoenixTrello.Board do
 end
 ```
 
-For now there's nothing important to mention yet, but we need to update the User model to add its related owned boards:
+到现在还没有重要的需要提醒的事情，我们仅需要更新User模型，并关联到owned_boards：
 
 ```elixir
 # web/models/user.ex
@@ -102,11 +102,11 @@ defmodule PhoenixTrello.User do
 end
 ```
 
-Why owned_boards? To differentiate between the boards created by the user and the ones he’s been added by other users, but let’s don’t worry about this right now, we will dive into it more deeply later on.
+为什么是owned_boards？用户创建的卡片和用户添加其他人的卡片是有区别的，现在不用考虑这些，以后我们会更深入地讨论。
 
-##The BoardController
+##BoardController
 
-So to create new boards we are going to need to update the routes file to add the necessary entry to handle the requests:
+为了实现新的boards，我们将更新路由文件，并添加必要的入口，便于处理各种请求。
 
 ```elixir
 # web/router.ex
@@ -130,14 +130,14 @@ defmodule PhoenixTrello.Router do
 end
 ```
 
-We've added the boards resource with only the index and create actions so the BoardController will handle this requests:
+在添加boards资源时，仅创建了index和create动作，BoardController将会处理这些请求：
 
 ```
 $ mix phoenix.routes
 board_path  GET     /api/v1/boards    PhoenixTrello.BoardController :index
 board_path  POST    /api/v1/boards    PhoenixTrello.BoardController :create
 ```
-Let's create the new controller:
+让我们创建新的控制器：
 
 ```elixir
 # web/controllers/board_controller.ex
@@ -182,9 +182,9 @@ end
 
 ```
 
-Note that we are adding the EnsureAuthenticated plug from Guardian so only authenticated connections are permitted in this controller. In the index action we get the current user from the connection and retrieve his owned board from the database so we can render them using the BoardView. Almost the same happens in the create action, we build a owned_board changeset from the user and insert it into the database, rendering the board as response if everything goes as expected.
+注意：我们从Guardian添加了 EnsureAuthenticated 插件，因此在这个控制器中只允许有授权的连接。在index动作中，我们从连接中获取当前用户，并从数据库检索相关卡片信息，便于在BoardView展示。几乎同时，在create动作中，我们从user建立了owned_board变更，并插入到数据库，如果一切顺利就渲染卡片。
 
-Let's create the BoardView:
+让我们创建 BoardView：
 
 ```elixir
 # web/views/board_view.ex
@@ -212,9 +212,9 @@ defmodule PhoenixTrello.BoardView do
 end
 ```
 
-##The React view component
+##React 视图组件
 
-Now that the back-end is ready for handling listing boards requests and also their creation, we are going to focus on the front-end. After the user signs in the first thing we want to show him is the list of his boards and the form for creating a new one, so let's create the HomeIndexView:
+服务器后端已经准备好处理卡片展示和创建请求，现在让我们着重于前端。在用户登陆后，首先将展示用户的卡片，同时可以点击窗口创建新的卡片，让我们来创建HomeIndexView：
 
 ```javascript
 // web/static/js/views/home/index.js
@@ -324,15 +324,15 @@ const mapStateToProps = (state) => (
 
 export default connect(mapStateToProps)(HomeIndexView);
 ```
-Many things are going on here so let's check them one by one:
+这里内容很多，让我们一个一个的看：
 
-* First of all we have to keep in mind that this component is connected to the store and will receive its props from the resulting changes by the boards reducer that we'll create in short.
+* 首先我们必须牢记：组件需要连接到sotre，并且属性改变来自于我们创建的卡片reducer。
 * When it mounts it will change the document's title to Boards and will dispatch and action creator to fetch the boards on the back-end.
 * For now it will just render the owned_boards array in the store and also the BoardForm component.
 * Before rendering this two, it will first check if the fetching prop is set to true. If so, it will mean that boards are still being fetched so it will render a spinner. Otherwise it will render the list of boards and the button for adding a new board.
 * When clicking the add new board button it will dispatch a new action creator for hiding the button and showing the form.
 
-Now let's add the BoardForm component:
+现在让我们来添加BoardForm 组件：
 
 ```javascript
 // web/static/js/components/boards/form.js
@@ -386,11 +386,11 @@ export default class BoardForm extends React.Component {
   }
 }
 ```
-This is a very simple component. It renders the form and when submitted it dispatches an action creator to create the new board with the supplied name. The PageClick component is an external component I found which detects page clicks outside the wrapper element. In our case we will use it to hide the form and show the Add new board... button again.
+这是一个很简单的组件。用于渲染表格This is a very simple component. It renders the form and when submitted it dispatches an action creator to create the new board with the supplied name. The PageClick component is an external component I found which detects page clicks outside the wrapper element. In our case we will use it to hide the form and show the Add new board... button again.
 
-##The action creators
+##action creators
 
-So we basically need three action creators:
+我们最少需要 3个 action creators：
 
 ```javascript
 // web/static/js/actions/boards.js
@@ -496,7 +496,7 @@ export default function reducer(state = initialState, action = {}) {
 ```
 Note how we set the fetching attribute to false once we load the boards and how we concat the new board created to the existing ones.
 
-Enough work for today! In the next post we will build the view to show a board and we will also add the functionality for adding new members to it, broadcasting the board to the related users so it appears in their invited boards list that we will also have to add. Meanwhile, don't forget to check out the live demo and final source code:
+Enough work for today! In the next post we will build the view to show a board and we will also add the functionality for adding new members to it, broadcasting the board to the related users so it appears in their invited boards list that we will also have to add.
+同样，别忘记查看运行演示和下载最终的源代码：
 
-Live demo Source code
-Happy coding!
+[演示](https://phoenix-trello.herokuapp.com/)        [源代码](https://github.com/bigardone/phoenix-trello)

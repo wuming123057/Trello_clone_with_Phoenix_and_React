@@ -34,5 +34,5 @@ After the author's permission, I translated into Chinese.
 9. [添加Board用户](9-Adding board members.md)<br/>
 10. [追踪已连接的Board用户](10-Tracking connected board members.md)<br/>
 11. [添加列表和卡片](11-Adding lists and cards.md)<br/>
-12. [在Heroku上部署](12-Deploying on Heroku.md.md)<br/>
+12. [在Heroku上部署](12-Deploying on Heroku.md)<br/>
 
